@@ -14,10 +14,10 @@ type Props = {
 
 export default function DonutChartCard({ title, data, nameKey = "name" }: Props) {
   return (
-    <div className="rounded-xl border border-stone-100 bg-white p-6">
+    <div className="rounded-xl border border-stone-100 bg-white p-4 sm:p-6">
       <h3 className="mb-4 text-sm font-semibold text-stone-700">{title}</h3>
-      <div className="flex items-center gap-4">
-        <div className="h-[180px] w-[180px] flex-shrink-0">
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
+        <div className="h-[150px] w-[150px] flex-shrink-0 sm:h-[180px] sm:w-[180px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie

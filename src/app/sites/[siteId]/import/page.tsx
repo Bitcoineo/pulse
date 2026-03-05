@@ -112,7 +112,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
     .every((f) => mapping[f.key]);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-6">
+    <div className="mx-auto max-w-4xl px-4 py-4 sm:px-6 sm:py-6">
       <h1 className="mb-6 text-2xl font-bold text-stone-900">Import</h1>
 
       {/* Upload zone */}
@@ -122,7 +122,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
-          className={`flex cursor-pointer flex-col items-center rounded-xl border-2 border-dashed p-12 text-center transition-colors ${
+          className={`flex cursor-pointer flex-col items-center rounded-xl border-2 border-dashed p-8 min-h-[200px] justify-center text-center transition-colors sm:p-12 ${
             dragOver
               ? "border-orange-400 bg-orange-50"
               : "border-stone-200 bg-white hover:border-stone-300"
@@ -152,14 +152,14 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
       {/* Column mapping */}
       {rows.length > 0 && !result && (
         <>
-          <div className="mb-6 rounded-xl border border-stone-200 bg-white p-6">
+          <div className="mb-6 rounded-xl border border-stone-200 bg-white p-4 sm:p-6">
             <h2 className="mb-4 text-lg font-semibold text-stone-900">
               Map columns
             </h2>
             <p className="mb-4 text-sm text-stone-500">
               Match your CSV columns to event fields. Required fields are marked with *.
             </p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {eventFields.map((field) => (
                 <div key={field.key} className="flex items-center gap-3">
                   <label className="w-28 text-sm text-stone-700 flex-shrink-0">
@@ -183,7 +183,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
 
           {/* Preview */}
           <div className="mb-6 rounded-xl border border-stone-200 bg-white overflow-hidden">
-            <div className="px-6 py-4 border-b border-stone-100">
+            <div className="px-4 py-3 border-b border-stone-100 sm:px-6 sm:py-4">
               <h2 className="text-sm font-semibold text-stone-700">
                 Preview — first 10 rows
               </h2>
@@ -213,11 +213,11 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <button
               onClick={handleImport}
               disabled={!requiredMapped || importing}
-              className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-400 disabled:opacity-50 transition-colors"
+              className="w-full rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-400 disabled:opacity-50 transition-colors sm:w-auto"
             >
               {importing ? `Importing... ${progress}%` : `Import ${rows.length.toLocaleString()} events`}
 
@@ -243,7 +243,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
 
       {/* Result */}
       {result && (
-        <div className="rounded-xl border border-stone-200 bg-white p-6">
+        <div className="rounded-xl border border-stone-200 bg-white p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-50">
               <svg className="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

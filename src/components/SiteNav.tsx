@@ -27,19 +27,19 @@ export default function SiteNav({ siteId }: { siteId: string }) {
 
   return (
     <div className="border-b border-stone-200 bg-white">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="py-4">
-          <h1 className="text-lg font-bold text-stone-900">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="py-3 sm:py-4">
+          <h1 className="text-base font-bold text-stone-900 sm:text-lg">
             {site?.name || "Loading..."}
           </h1>
-          <p className="text-sm text-stone-500 font-mono">{site?.domain}</p>
+          <p className="text-xs text-stone-500 font-mono sm:text-sm">{site?.domain}</p>
         </div>
-        <nav className="-mb-px flex gap-6">
+        <nav className="-mb-px flex gap-4 overflow-x-auto sm:gap-6">
           {tabs.map((tab) => (
             <Link
               key={tab.path}
               href={`/sites/${siteId}${tab.path}`}
-              className={`border-b-2 pb-3 text-sm font-medium transition-colors ${
+              className={`border-b-2 pb-3 text-sm font-medium whitespace-nowrap transition-colors ${
                 isActive(tab.path)
                   ? "border-orange-500 text-orange-600"
                   : "border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300"

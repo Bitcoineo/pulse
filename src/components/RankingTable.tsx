@@ -16,7 +16,7 @@ export default function RankingTable({
   const maxCount = data.length > 0 ? Math.max(...data.map((r) => r.count)) : 1;
 
   return (
-    <div className="rounded-xl border border-stone-100 bg-white p-6">
+    <div className="rounded-xl border border-stone-100 bg-white p-4 sm:p-6">
       <h3 className="mb-4 text-sm font-semibold text-stone-700">{title}</h3>
       <div className="mb-2 flex text-xs font-medium text-stone-400 uppercase">
         <span className="flex-1">{labelHeader}</span>

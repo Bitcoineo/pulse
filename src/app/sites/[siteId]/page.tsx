@@ -89,16 +89,16 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
   const hasRevenue = revenue && revenue.length > 0;
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-6">
+    <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6">
       {/* Top bar */}
-      <div className="mb-6 flex items-center justify-end">
+      <div className="mb-4 flex items-center justify-end sm:mb-6">
         <DateRangePicker startDate={startDate} endDate={endDate} onChange={handleDateChange} />
       </div>
 
       {/* ROW 1: Metric cards */}
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-4 grid grid-cols-2 gap-3 sm:mb-6 sm:gap-4 lg:grid-cols-4">
         {overviewErr ? (
-          <div className="sm:col-span-2 lg:col-span-4"><ErrorCard mutate={overviewMutate} /></div>
+          <div className="col-span-2 lg:col-span-4"><ErrorCard mutate={overviewMutate} /></div>
         ) : overview ? (
           <>
             <MetricCard
@@ -134,7 +134,7 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
       </div>
 
       {/* ROW 2: Pageviews over time */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         {pageviewsErr ? (
           <ErrorCard mutate={pageviewsMutate} />
         ) : pageviews ? (
@@ -145,7 +145,7 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
       </div>
 
       {/* ROW 3: Top Pages + Referrers */}
-      <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:mb-6 sm:gap-4 lg:grid-cols-2">
         {pagesErr ? (
           <ErrorCard mutate={pagesMutate} />
         ) : pages ? (
@@ -173,7 +173,7 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
       </div>
 
       {/* ROW 4: Browser, Device, Country */}
-      <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:mb-6 sm:gap-4 lg:grid-cols-3">
         {browsersErr ? (
           <ErrorCard mutate={browsersMutate} />
         ) : browsers ? (
@@ -207,7 +207,7 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
       {revenueErr ? (
         <ErrorCard mutate={revenueMutate} />
       ) : hasRevenue && overview && overview.totalRevenue > 0 ? (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-4">
           <div className="lg:col-span-3">
             <BarChartCard title="Revenue" data={revenue} />
           </div>

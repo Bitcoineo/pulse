@@ -26,9 +26,9 @@ export default function BarChartCard({ title, data, color = "#F97316" }: Props) 
   }));
 
   return (
-    <div className="rounded-xl border border-stone-100 bg-white p-6">
+    <div className="rounded-xl border border-stone-100 bg-white p-4 sm:p-6">
       <h3 className="mb-4 text-sm font-semibold text-stone-700">{title}</h3>
-      <div className="h-[250px]">
+      <div className="h-[200px] sm:h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={formatted} margin={{ top: 4, right: 4, left: -10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" />

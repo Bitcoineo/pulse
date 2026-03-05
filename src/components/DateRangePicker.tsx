@@ -74,7 +74,7 @@ export default function DateRangePicker({ startDate, endDate, onChange }: Props)
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-72 rounded-xl border border-stone-200 bg-white p-3 shadow-lg">
+        <div className="absolute right-0 top-full z-50 mt-2 w-[calc(100vw-2rem)] max-w-72 rounded-xl border border-stone-200 bg-white p-3 shadow-lg sm:w-72">
           <div className="space-y-1">
             {presets.map((p) => (
               <button

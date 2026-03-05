@@ -51,7 +51,7 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
 
   if (!site) {
     return (
-      <div className="mx-auto max-w-2xl px-6 py-6">
+      <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6">
         <div className="animate-pulse space-y-4">
           <div className="h-8 w-32 rounded bg-stone-200" />
           <div className="h-40 rounded-xl bg-stone-200" />
@@ -61,11 +61,11 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-6">
+    <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6">
       <h1 className="mb-6 text-2xl font-bold text-stone-900">Settings</h1>
 
       {/* General */}
-      <form onSubmit={handleSave} className="mb-8 rounded-xl border border-stone-200 bg-white p-6">
+      <form onSubmit={handleSave} className="mb-8 rounded-xl border border-stone-200 bg-white p-4 sm:p-6">
         <h2 className="mb-4 text-lg font-semibold text-stone-900">General</h2>
         <div className="space-y-4">
           <div>
@@ -104,12 +104,12 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
       </form>
 
       {/* Tracking snippet */}
-      <div className="mb-8 rounded-xl border border-stone-200 bg-white p-6">
+      <div className="mb-8 rounded-xl border border-stone-200 bg-white p-4 sm:p-6">
         <h2 className="mb-2 text-lg font-semibold text-stone-900">Tracking snippet</h2>
         <p className="mb-4 text-sm text-stone-500">
           Add this to your site. Events start flowing immediately.
         </p>
-        <pre className="rounded-lg bg-stone-50 border border-stone-200 p-4 text-xs font-mono text-stone-700 overflow-x-auto whitespace-pre">{`<script>
+        <pre className="rounded-lg bg-stone-50 border border-stone-200 p-3 text-[11px] font-mono text-stone-700 overflow-x-auto whitespace-pre sm:p-4 sm:text-xs">{`<script>
 fetch('${typeof window !== "undefined" ? window.location.origin : "https://your-pulse-url"}/api/collect', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -125,7 +125,7 @@ fetch('${typeof window !== "undefined" ? window.location.origin : "https://your-
       </div>
 
       {/* Danger zone */}
-      <div className="rounded-xl border border-red-200 bg-white p-6">
+      <div className="rounded-xl border border-red-200 bg-white p-4 sm:p-6">
         <h2 className="mb-2 text-lg font-semibold text-red-600">Delete site</h2>
         <p className="mb-4 text-sm text-stone-500">
           Removes the site, all events, and all dashboards. Can&apos;t be undone.

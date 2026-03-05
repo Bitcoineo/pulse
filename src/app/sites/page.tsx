@@ -35,7 +35,7 @@ export default function SitesPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-8">
+    <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-stone-900">Sites</h1>
@@ -51,7 +51,7 @@ export default function SitesPage() {
       {showForm && (
         <form onSubmit={handleCreate} className="mb-8 rounded-xl border border-stone-200 bg-white p-6">
           <h2 className="text-lg font-semibold text-stone-900 mb-4">New site</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-stone-700 mb-1">Name</label>
               <input

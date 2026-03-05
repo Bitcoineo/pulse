@@ -118,10 +118,10 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
   if (search) activeFilters.push(`"${search}"`);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-6">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6">
+      <div className="mb-4 space-y-3 sm:mb-6 sm:flex sm:items-center sm:justify-between sm:space-y-0">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">Events</h1>
+          <h1 className="text-xl font-bold text-stone-900 sm:text-2xl">Events</h1>
           {data && (
             <p className="text-sm text-stone-500">
               <span className="font-mono">{data.total.toLocaleString()}</span> events
@@ -137,7 +137,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
             </p>
           )}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={handleExport}
             className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
@@ -149,17 +149,27 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
       </div>
 
       {/* Filters */}
-      <div className="mb-4 flex items-center gap-3">
-        <select
-          value={type}
-          onChange={(e) => { setType(e.target.value); setPage(1); }}
-          className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500"
-        >
-          {eventTypes.map((t) => (
-            <option key={t.value} value={t.value}>{t.label}</option>
-          ))}
-        </select>
-        <form onSubmit={handleSearch} className="flex-1 max-w-xs">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+        <div className="flex items-center gap-2">
+          <select
+            value={type}
+            onChange={(e) => { setType(e.target.value); setPage(1); }}
+            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500"
+          >
+            {eventTypes.map((t) => (
+              <option key={t.value} value={t.value}>{t.label}</option>
+            ))}
+          </select>
+          {(type || search) && (
+            <button
+              onClick={() => { setType(""); setSearch(""); setSearchInput(""); setPage(1); }}
+              className="text-sm text-stone-500 hover:text-stone-700 whitespace-nowrap"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <form onSubmit={handleSearch} className="flex-1 sm:max-w-xs">
           <input
             type="text"
             value={searchInput}
@@ -168,14 +178,6 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
             className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500"
           />
         </form>
-        {(type || search) && (
-          <button
-            onClick={() => { setType(""); setSearch(""); setSearchInput(""); setPage(1); }}
-            className="text-sm text-stone-500 hover:text-stone-700"
-          >
-            Clear filters
-          </button>
-        )}
       </div>
 
       {/* Table */}
@@ -191,14 +193,16 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full min-w-[600px] text-sm">
               <thead>
                 <tr className="border-b border-stone-100 bg-stone-50/50">
-                  {columns.map((col) => (
+                  {columns.map((col) => {
+                    const hideMobile = ["browser", "os", "device", "country"].includes(col.key);
+                    return (
                     <th
                       key={col.key}
                       onClick={() => handleSort(col.key)}
-                      className="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase text-stone-500 hover:text-stone-700 select-none"
+                      className={`cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase text-stone-500 hover:text-stone-700 select-none sm:px-4 ${hideMobile ? "hidden sm:table-cell" : ""}`}
                     >
                       <span className="inline-flex items-center gap-1">
                         {col.label}
@@ -207,30 +211,31 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
                         )}
                       </span>
                     </th>
-                  ))}
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
                 {data?.events.map((event, i) => (
                   <tr key={event.id} className={`border-b border-stone-50 hover:bg-stone-50/50 ${i % 2 === 1 ? "bg-stone-50/30" : ""}`}>
-                    <td className="px-4 py-2.5 text-stone-500 whitespace-nowrap font-mono text-xs">
+                    <td className="px-3 py-2.5 text-stone-500 whitespace-nowrap font-mono text-xs sm:px-4">
                       {format(new Date(event.timestamp), "MMM d, HH:mm:ss")}
                     </td>
-                    <td className="px-4 py-2.5">
+                    <td className="px-3 py-2.5 sm:px-4">
                       <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${eventColors[event.name] || "bg-stone-100 text-stone-700"}`}>
                         {event.name}
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 text-stone-900 font-mono text-xs">{event.path}</td>
-                    <td className="px-4 py-2.5 text-stone-500 truncate max-w-[120px]">{event.referrer || "-"}</td>
-                    <td className="px-4 py-2.5 text-stone-500">{event.browser || "-"}</td>
-                    <td className="px-4 py-2.5 text-stone-500">{event.os || "-"}</td>
-                    <td className="px-4 py-2.5 text-stone-500">{event.device || "-"}</td>
-                    <td className="px-4 py-2.5 text-stone-500">{event.country || "-"}</td>
-                    <td className="px-4 py-2.5 text-stone-500 font-mono tabular-nums text-xs">
+                    <td className="px-3 py-2.5 text-stone-900 font-mono text-xs sm:px-4">{event.path}</td>
+                    <td className="px-3 py-2.5 text-stone-500 truncate max-w-[120px] sm:px-4">{event.referrer || "-"}</td>
+                    <td className="hidden sm:table-cell px-4 py-2.5 text-stone-500">{event.browser || "-"}</td>
+                    <td className="hidden sm:table-cell px-4 py-2.5 text-stone-500">{event.os || "-"}</td>
+                    <td className="hidden sm:table-cell px-4 py-2.5 text-stone-500">{event.device || "-"}</td>
+                    <td className="hidden sm:table-cell px-4 py-2.5 text-stone-500">{event.country || "-"}</td>
+                    <td className="px-3 py-2.5 text-stone-500 font-mono tabular-nums text-xs sm:px-4">
                       {event.duration != null ? `${event.duration}s` : "-"}
                     </td>
-                    <td className="px-4 py-2.5 text-stone-500 font-mono tabular-nums text-xs">
+                    <td className="px-3 py-2.5 text-stone-500 font-mono tabular-nums text-xs sm:px-4">
                       {event.revenue != null ? `$${(event.revenue / 100).toFixed(2)}` : "-"}
                     </td>
                   </tr>
@@ -249,15 +254,15 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
 
         {/* Pagination */}
         {data && data.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-stone-100 px-4 py-3">
-            <p className="text-sm text-stone-500">
-              Page <span className="font-mono">{data.page}</span> of <span className="font-mono">{data.totalPages}</span>
+          <div className="flex items-center justify-between border-t border-stone-100 px-3 py-3 sm:px-4">
+            <p className="text-xs text-stone-500 sm:text-sm">
+              <span className="font-mono">{data.page}</span>/<span className="font-mono">{data.totalPages}</span>
             </p>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page <= 1}
-                className="rounded-lg px-3 py-1.5 text-sm text-stone-600 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-lg px-2 py-1.5 text-sm text-stone-600 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed sm:px-3"
               >
                 Prev
               </button>
