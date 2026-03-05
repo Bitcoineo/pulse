@@ -1,10 +1,20 @@
 const store = new Map<string, { count: number; resetAt: number }>();
+const MAX_STORE_SIZE = 10_000;
+
+function pruneExpired() {
+  const now = Date.now();
+  store.forEach((entry, key) => {
+    if (now > entry.resetAt) store.delete(key);
+  });
+}
 
 export function rateLimit(
   key: string,
   limit: number,
   windowMs: number
 ): { success: boolean; remaining: number } {
+  if (store.size > MAX_STORE_SIZE) pruneExpired();
+
   const now = Date.now();
   const entry = store.get(key);
 

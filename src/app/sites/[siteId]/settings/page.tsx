@@ -17,15 +17,17 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const [initialized, setInitialized] = useState(false);
   const [confirmName, setConfirmName] = useState("");
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (site) {
+    if (site && !initialized) {
       setName(site.name);
       setDomain(site.domain);
+      setInitialized(true);
     }
-  }, [site]);
+  }, [site, initialized]);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();

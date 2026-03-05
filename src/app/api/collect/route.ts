@@ -3,25 +3,26 @@ import { db } from "@/db";
 import { events, sites } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { rateLimit } from "@/lib/rate-limit";
+import { jsonError } from "@/lib/api-utils";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { siteId, name, path, referrer, browser, os, device, country, city, duration, revenue, metadata } = body;
 
   if (!siteId || !name || !path) {
-    return NextResponse.json({ error: "siteId, name, and path are required." }, { status: 400 });
+    return jsonError("siteId, name, and path are required.");
   }
 
   const rl = rateLimit(`collect:${siteId}`, 100, 60_000);
   if (!rl.success) {
-    return NextResponse.json({ error: "Slow down. Try again in a moment." }, { status: 429 });
+    return jsonError("Slow down. Try again in a moment.", 429);
   }
 
   const site = await db.query.sites.findFirst({
     where: eq(sites.id, siteId),
   });
   if (!site) {
-    return NextResponse.json({ error: "Not found." }, { status: 404 });
+    return jsonError("Not found.", 404);
   }
 
   await db.insert(events).values({
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
     country: country || null,
     city: city || null,
     duration: duration != null ? Number(duration) || null : null,
-    revenue: revenue != null ? Math.round(Number(revenue) * 100) || null : null,
+    revenue: revenue != null ? (isNaN(Number(revenue)) ? null : Math.round(Number(revenue) * 100)) : null,
     metadata: metadata ? JSON.stringify(metadata) : null,
     timestamp: new Date().toISOString(),
   });
