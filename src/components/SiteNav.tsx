@@ -1,0 +1,56 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+type Site = { id: string; name: string; domain: string };
+
+const tabs = [
+  { label: "Dashboard", path: "" },
+  { label: "Events", path: "/events" },
+  { label: "Import", path: "/import" },
+  { label: "Settings", path: "/settings" },
+];
+
+export default function SiteNav({ siteId }: { siteId: string }) {
+  const pathname = usePathname();
+  const { data: site } = useSWR<Site>(`/api/sites/${siteId}`, fetcher);
+
+  function isActive(tabPath: string) {
+    if (!pathname) return false;
+    const full = `/sites/${siteId}${tabPath}`;
+    if (tabPath === "") return pathname === full;
+    return pathname.startsWith(full);
+  }
+
+  return (
+    <div className="border-b border-gray-200 bg-white">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="py-4">
+          <h1 className="text-lg font-bold text-gray-900">
+            {site?.name || "Loading..."}
+          </h1>
+          <p className="text-sm text-gray-500">{site?.domain}</p>
+        </div>
+        <nav className="-mb-px flex gap-6">
+          {tabs.map((tab) => (
+            <Link
+              key={tab.path}
+              href={`/sites/${siteId}${tab.path}`}
+              className={`border-b-2 pb-3 text-sm font-medium transition-colors ${
+                isActive(tab.path)
+                  ? "border-emerald-500 text-emerald-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
+}
