@@ -62,19 +62,19 @@ export default function DateRangePicker({ startDate, endDate, onChange }: Props)
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
       >
-        <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="h-4 w-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
         {displayText}
-        <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="h-4 w-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
+        <div className="absolute right-0 top-full z-50 mt-2 w-72 rounded-xl border border-stone-200 bg-white p-3 shadow-lg">
           <div className="space-y-1">
             {presets.map((p) => (
               <button
@@ -82,8 +82,8 @@ export default function DateRangePicker({ startDate, endDate, onChange }: Props)
                 onClick={() => selectPreset(p)}
                 className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-colors ${
                   activePreset === p.label
-                    ? "bg-emerald-50 text-emerald-700 font-medium"
-                    : "text-gray-700 hover:bg-gray-50"
+                    ? "bg-orange-50 text-orange-700 font-medium"
+                    : "text-stone-700 hover:bg-stone-50"
                 }`}
               >
                 {p.label}
@@ -91,25 +91,25 @@ export default function DateRangePicker({ startDate, endDate, onChange }: Props)
             ))}
           </div>
 
-          <div className="mt-3 border-t border-gray-100 pt-3">
-            <p className="mb-2 text-xs font-medium text-gray-500 uppercase">Custom Range</p>
+          <div className="mt-3 border-t border-stone-100 pt-3">
+            <p className="mb-2 text-xs font-medium text-stone-500 uppercase">Custom Range</p>
             <div className="flex gap-2">
               <input
                 type="date"
                 value={customStart.slice(0, 10)}
                 onChange={(e) => setCustomStart(new Date(e.target.value).toISOString())}
-                className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm"
+                className="w-full rounded-md border border-stone-200 px-2 py-1.5 text-sm"
               />
               <input
                 type="date"
                 value={customEnd.slice(0, 10)}
                 onChange={(e) => setCustomEnd(new Date(e.target.value).toISOString())}
-                className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm"
+                className="w-full rounded-md border border-stone-200 px-2 py-1.5 text-sm"
               />
             </div>
             <button
               onClick={applyCustom}
-              className="mt-2 w-full rounded-lg bg-emerald-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-600 transition-colors"
+              className="mt-2 w-full rounded-lg bg-orange-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-600 transition-colors"
             >
               Apply
             </button>

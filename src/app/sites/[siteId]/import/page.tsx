@@ -41,7 +41,6 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
         setHeaders(cols);
         setRows(data);
 
-        // Auto-map columns
         const autoMap: FieldMapping = {};
         for (const field of eventFields) {
           const match = cols.find(
@@ -85,7 +84,6 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
       return out;
     });
 
-    // Send in batches of 1000 for progress
     const BATCH = 1000;
     let totalImported = 0;
     let totalSkipped = 0;
@@ -115,7 +113,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-6">
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Import</h1>
+      <h1 className="mb-6 text-2xl font-bold text-stone-900">Import</h1>
 
       {/* Upload zone */}
       {rows.length === 0 && (
@@ -126,19 +124,19 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
           onClick={() => fileRef.current?.click()}
           className={`flex cursor-pointer flex-col items-center rounded-xl border-2 border-dashed p-12 text-center transition-colors ${
             dragOver
-              ? "border-emerald-400 bg-emerald-50"
-              : "border-gray-200 bg-white hover:border-gray-300"
+              ? "border-orange-400 bg-orange-50"
+              : "border-stone-200 bg-white hover:border-stone-300"
           }`}
         >
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50">
-            <svg className="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-orange-50">
+            <svg className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
           </div>
-          <p className="mt-4 text-sm font-medium text-gray-900">
+          <p className="mt-4 text-sm font-medium text-stone-900">
             Drop a CSV file here or click to browse
           </p>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-stone-500">
             Required columns: name, path, timestamp
           </p>
           <input
@@ -154,24 +152,24 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
       {/* Column mapping */}
       {rows.length > 0 && !result && (
         <>
-          <div className="mb-6 rounded-xl border border-gray-200 bg-white p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
+          <div className="mb-6 rounded-xl border border-stone-200 bg-white p-6">
+            <h2 className="mb-4 text-lg font-semibold text-stone-900">
               Map columns
             </h2>
-            <p className="mb-4 text-sm text-gray-500">
+            <p className="mb-4 text-sm text-stone-500">
               Match your CSV columns to event fields. Required fields are marked with *.
             </p>
             <div className="grid grid-cols-2 gap-3">
               {eventFields.map((field) => (
                 <div key={field.key} className="flex items-center gap-3">
-                  <label className="w-28 text-sm text-gray-700 flex-shrink-0">
+                  <label className="w-28 text-sm text-stone-700 flex-shrink-0">
                     {field.label}
                     {field.required && <span className="text-red-400 ml-0.5">*</span>}
                   </label>
                   <select
                     value={mapping[field.key] || ""}
                     onChange={(e) => mapField(field.key, e.target.value)}
-                    className="flex-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm outline-none focus:border-emerald-500"
+                    className="flex-1 rounded-lg border border-stone-200 px-3 py-1.5 text-sm outline-none focus:border-orange-500"
                   >
                     <option value="">-- skip --</option>
                     {headers.map((h) => (
@@ -184,26 +182,26 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
           </div>
 
           {/* Preview */}
-          <div className="mb-6 rounded-xl border border-gray-200 bg-white overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100">
-              <h2 className="text-sm font-semibold text-gray-700">
-                Preview ({rows.length.toLocaleString()} rows)
+          <div className="mb-6 rounded-xl border border-stone-200 bg-white overflow-hidden">
+            <div className="px-6 py-4 border-b border-stone-100">
+              <h2 className="text-sm font-semibold text-stone-700">
+                Preview (<span className="font-mono">{rows.length.toLocaleString()}</span> rows)
               </h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="bg-gray-50/50 border-b border-gray-100">
+                  <tr className="bg-stone-50/50 border-b border-stone-100">
                     {headers.slice(0, 8).map((h) => (
-                      <th key={h} className="px-3 py-2 text-left font-medium text-gray-500">{h}</th>
+                      <th key={h} className="px-3 py-2 text-left font-medium text-stone-500">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {rows.slice(0, 10).map((row, i) => (
-                    <tr key={i} className="border-b border-gray-50">
+                    <tr key={i} className="border-b border-stone-50">
                       {headers.slice(0, 8).map((h) => (
-                        <td key={h} className="px-3 py-2 text-gray-600 truncate max-w-[150px]">
+                        <td key={h} className="px-3 py-2 text-stone-600 truncate max-w-[150px] font-mono">
                           {row[h] || "-"}
                         </td>
                       ))}
@@ -219,22 +217,22 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
             <button
               onClick={handleImport}
               disabled={!requiredMapped || importing}
-              className="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-50 transition-colors"
+              className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-400 disabled:opacity-50 transition-colors"
             >
               {importing ? `Importing... ${progress}%` : `Import ${rows.length.toLocaleString()} events`}
             </button>
             <button
               onClick={() => { setRows([]); setHeaders([]); setMapping({}); }}
-              className="rounded-lg px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-100"
+              className="rounded-lg px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-100"
             >
               Cancel
             </button>
           </div>
 
           {importing && (
-            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-stone-200">
               <div
-                className="h-full rounded-full bg-emerald-500 transition-all duration-300"
+                className="h-full rounded-full bg-orange-500 transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -244,17 +242,17 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
 
       {/* Result */}
       {result && (
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
+        <div className="rounded-xl border border-stone-200 bg-white p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50">
-              <svg className="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-50">
+              <svg className="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <div>
-              <p className="text-lg font-semibold text-gray-900">Import complete</p>
-              <p className="text-sm text-gray-500">
-                Imported {result.imported.toLocaleString()} events.
+              <p className="text-lg font-semibold text-stone-900">Import complete</p>
+              <p className="text-sm text-stone-500">
+                Imported <span className="font-mono">{result.imported.toLocaleString()}</span> events.
                 {result.skipped > 0 && ` ${result.skipped} rows skipped (invalid).`}
               </p>
             </div>
@@ -263,7 +261,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
           {result.errors.length > 0 && (
             <div className="mt-4 rounded-lg bg-red-50 p-4">
               <p className="mb-2 text-sm font-medium text-red-700">Errors:</p>
-              <ul className="space-y-1 text-xs text-red-600">
+              <ul className="space-y-1 text-xs text-red-600 font-mono">
                 {result.errors.map((err, i) => (
                   <li key={i}>Row {err.row}: {err.error}</li>
                 ))}
@@ -273,7 +271,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
 
           <button
             onClick={() => { setRows([]); setHeaders([]); setMapping({}); setResult(null); }}
-            className="mt-4 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600"
+            className="mt-4 rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400"
           >
             Import more
           </button>

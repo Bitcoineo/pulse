@@ -19,10 +19,10 @@ type Props = {
   color?: string;
 };
 
-export default function AreaChartCard({ title, data, color = "#10B981" }: Props) {
+export default function AreaChartCard({ title, data, color = "#F97316" }: Props) {
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-6">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">{title}</h3>
+    <div className="rounded-xl border border-stone-100 bg-white p-6">
+      <h3 className="mb-4 text-sm font-semibold text-stone-700">{title}</h3>
       <div className="h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
@@ -32,23 +32,23 @@ export default function AreaChartCard({ title, data, color = "#10B981" }: Props)
                 <stop offset="100%" stopColor={color} stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" />
             <XAxis
               dataKey="date"
-              tick={{ fontSize: 12, fill: "#9CA3AF" }}
+              tick={{ fontSize: 12, fill: "#a8a29e" }}
               tickFormatter={(v) => format(new Date(v), "MMM d")}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 12, fill: "#9CA3AF" }}
+              tick={{ fontSize: 12, fill: "#a8a29e" }}
               axisLine={false}
               tickLine={false}
             />
             <Tooltip
               contentStyle={{
                 borderRadius: "8px",
-                border: "1px solid #e5e7eb",
+                border: "1px solid #e7e5e4",
                 boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.05)",
                 fontSize: "13px",
               }}

@@ -27,13 +27,13 @@ export default function SiteNav({ siteId }: { siteId: string }) {
   }
 
   return (
-    <div className="border-b border-gray-200 bg-white">
+    <div className="border-b border-stone-200 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <div className="py-4">
-          <h1 className="text-lg font-bold text-gray-900">
+          <h1 className="text-lg font-bold text-stone-900">
             {site?.name || "Loading..."}
           </h1>
-          <p className="text-sm text-gray-500">{site?.domain}</p>
+          <p className="text-sm text-stone-500 font-mono">{site?.domain}</p>
         </div>
         <nav className="-mb-px flex gap-6">
           {tabs.map((tab) => (
@@ -42,8 +42,8 @@ export default function SiteNav({ siteId }: { siteId: string }) {
               href={`/sites/${siteId}${tab.path}`}
               className={`border-b-2 pb-3 text-sm font-medium transition-colors ${
                 isActive(tab.path)
-                  ? "border-emerald-500 text-emerald-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? "border-orange-500 text-orange-600"
+                  : "border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300"
               }`}
             >
               {tab.label}

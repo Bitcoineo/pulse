@@ -51,7 +51,7 @@ const eventTypes = [
 ];
 
 const eventColors: Record<string, string> = {
-  pageview: "bg-emerald-100 text-emerald-700",
+  pageview: "bg-orange-100 text-orange-700",
   click: "bg-blue-100 text-blue-700",
   signup: "bg-purple-100 text-purple-700",
   purchase: "bg-amber-100 text-amber-700",
@@ -122,14 +122,14 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
     <div className="mx-auto max-w-7xl px-6 py-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Events</h1>
+          <h1 className="text-2xl font-bold text-stone-900">Events</h1>
           {data && (
-            <p className="text-sm text-gray-500">
-              {data.total.toLocaleString()} events
+            <p className="text-sm text-stone-500">
+              <span className="font-mono">{data.total.toLocaleString()}</span> events
               {activeFilters.length > 0 && (
                 <span className="ml-2">
                   {activeFilters.map((f, i) => (
-                    <span key={i} className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600 ml-1">
+                    <span key={i} className="inline-flex items-center rounded-full bg-orange-50 px-2 py-0.5 text-xs text-orange-700 ml-1">
                       {f}
                     </span>
                   ))}
@@ -141,7 +141,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
         <div className="flex items-center gap-3">
           <button
             onClick={handleExport}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
           >
             Export CSV
           </button>
@@ -154,7 +154,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
         <select
           value={type}
           onChange={(e) => { setType(e.target.value); setPage(1); }}
-          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500"
+          className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500"
         >
           {eventTypes.map((t) => (
             <option key={t.value} value={t.value}>{t.label}</option>
@@ -166,13 +166,13 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search path or referrer..."
-            className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500"
+            className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500"
           />
         </form>
         {(type || search) && (
           <button
             onClick={() => { setType(""); setSearch(""); setSearchInput(""); setPage(1); }}
-            className="text-sm text-gray-500 hover:text-gray-700"
+            className="text-sm text-stone-500 hover:text-stone-700"
           >
             Clear filters
           </button>
@@ -180,7 +180,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-gray-100 bg-white overflow-hidden">
+      <div className="rounded-xl border border-stone-100 bg-white overflow-hidden">
         {isLoading && !data ? (
           <div className="p-6">
             <SkeletonTable rows={10} />
@@ -189,17 +189,17 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100 bg-gray-50/50">
+                <tr className="border-b border-stone-100 bg-stone-50/50">
                   {columns.map((col) => (
                     <th
                       key={col.key}
                       onClick={() => handleSort(col.key)}
-                      className="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase text-gray-500 hover:text-gray-700 select-none"
+                      className="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase text-stone-500 hover:text-stone-700 select-none"
                     >
                       <span className="inline-flex items-center gap-1">
                         {col.label}
                         {sort === col.key && (
-                          <span className="text-emerald-500">{order === "asc" ? "\u2191" : "\u2193"}</span>
+                          <span className="text-orange-500">{order === "asc" ? "\u2191" : "\u2193"}</span>
                         )}
                       </span>
                     </th>
@@ -208,32 +208,32 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
               </thead>
               <tbody>
                 {data?.events.map((event, i) => (
-                  <tr key={event.id} className={`border-b border-gray-50 hover:bg-gray-50/50 ${i % 2 === 1 ? "bg-gray-50/30" : ""}`}>
-                    <td className="px-4 py-2.5 text-gray-500 whitespace-nowrap">
+                  <tr key={event.id} className={`border-b border-stone-50 hover:bg-stone-50/50 ${i % 2 === 1 ? "bg-stone-50/30" : ""}`}>
+                    <td className="px-4 py-2.5 text-stone-500 whitespace-nowrap font-mono text-xs">
                       {format(new Date(event.timestamp), "MMM d, HH:mm:ss")}
                     </td>
                     <td className="px-4 py-2.5">
-                      <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${eventColors[event.name] || "bg-gray-100 text-gray-700"}`}>
+                      <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${eventColors[event.name] || "bg-stone-100 text-stone-700"}`}>
                         {event.name}
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 text-gray-900 font-mono text-xs">{event.path}</td>
-                    <td className="px-4 py-2.5 text-gray-500 truncate max-w-[120px]">{event.referrer || "-"}</td>
-                    <td className="px-4 py-2.5 text-gray-500">{event.browser || "-"}</td>
-                    <td className="px-4 py-2.5 text-gray-500">{event.os || "-"}</td>
-                    <td className="px-4 py-2.5 text-gray-500">{event.device || "-"}</td>
-                    <td className="px-4 py-2.5 text-gray-500">{event.country || "-"}</td>
-                    <td className="px-4 py-2.5 text-gray-500 tabular-nums">
+                    <td className="px-4 py-2.5 text-stone-900 font-mono text-xs">{event.path}</td>
+                    <td className="px-4 py-2.5 text-stone-500 truncate max-w-[120px]">{event.referrer || "-"}</td>
+                    <td className="px-4 py-2.5 text-stone-500">{event.browser || "-"}</td>
+                    <td className="px-4 py-2.5 text-stone-500">{event.os || "-"}</td>
+                    <td className="px-4 py-2.5 text-stone-500">{event.device || "-"}</td>
+                    <td className="px-4 py-2.5 text-stone-500">{event.country || "-"}</td>
+                    <td className="px-4 py-2.5 text-stone-500 font-mono tabular-nums text-xs">
                       {event.duration != null ? `${event.duration}s` : "-"}
                     </td>
-                    <td className="px-4 py-2.5 text-gray-500 tabular-nums">
+                    <td className="px-4 py-2.5 text-stone-500 font-mono tabular-nums text-xs">
                       {event.revenue != null ? `$${(event.revenue / 100).toFixed(2)}` : "-"}
                     </td>
                   </tr>
                 ))}
                 {data?.events.length === 0 && (
                   <tr>
-                    <td colSpan={10} className="px-4 py-12 text-center text-gray-400">
+                    <td colSpan={10} className="px-4 py-12 text-center text-stone-400">
                       No events found
                     </td>
                   </tr>
@@ -245,15 +245,15 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
 
         {/* Pagination */}
         {data && data.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
-            <p className="text-sm text-gray-500">
-              Page {data.page} of {data.totalPages}
+          <div className="flex items-center justify-between border-t border-stone-100 px-4 py-3">
+            <p className="text-sm text-stone-500">
+              Page <span className="font-mono">{data.page}</span> of <span className="font-mono">{data.totalPages}</span>
             </p>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page <= 1}
-                className="rounded-lg px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-lg px-3 py-1.5 text-sm text-stone-600 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Prev
               </button>
@@ -272,10 +272,10 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
                   <button
                     key={pageNum}
                     onClick={() => setPage(pageNum)}
-                    className={`rounded-lg px-3 py-1.5 text-sm font-medium ${
+                    className={`rounded-lg px-3 py-1.5 text-sm font-medium font-mono ${
                       pageNum === page
-                        ? "bg-emerald-50 text-emerald-600"
-                        : "text-gray-600 hover:bg-gray-50"
+                        ? "bg-orange-50 text-orange-600"
+                        : "text-stone-600 hover:bg-stone-50"
                     }`}
                   >
                     {pageNum}
@@ -285,7 +285,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
               <button
                 onClick={() => setPage(Math.min(data.totalPages, page + 1))}
                 disabled={page >= data.totalPages}
-                className="rounded-lg px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-lg px-3 py-1.5 text-sm text-stone-600 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Next
               </button>

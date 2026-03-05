@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 type DataItem = { name: string; count: number; percentage: number };
 
-const COLORS = ["#10B981", "#3B82F6", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899", "#14B8A6", "#6366F1"];
+const COLORS = ["#F97316", "#3B82F6", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899", "#14B8A6", "#6366F1"];
 
 type Props = {
   title: string;
@@ -14,8 +14,8 @@ type Props = {
 
 export default function DonutChartCard({ title, data, nameKey = "name" }: Props) {
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-6">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">{title}</h3>
+    <div className="rounded-xl border border-stone-100 bg-white p-6">
+      <h3 className="mb-4 text-sm font-semibold text-stone-700">{title}</h3>
       <div className="flex items-center gap-4">
         <div className="h-[180px] w-[180px] flex-shrink-0">
           <ResponsiveContainer width="100%" height="100%">
@@ -37,7 +37,7 @@ export default function DonutChartCard({ title, data, nameKey = "name" }: Props)
               <Tooltip
                 contentStyle={{
                   borderRadius: "8px",
-                  border: "1px solid #e5e7eb",
+                  border: "1px solid #e7e5e4",
                   fontSize: "13px",
                 }}
                 formatter={(value) => [(value as number).toLocaleString(), "Views"]}
@@ -52,8 +52,8 @@ export default function DonutChartCard({ title, data, nameKey = "name" }: Props)
                 className="inline-block h-3 w-3 rounded-full flex-shrink-0"
                 style={{ backgroundColor: COLORS[i % COLORS.length] }}
               />
-              <span className="text-gray-700 truncate">{(item as Record<string, unknown>)[nameKey] as string}</span>
-              <span className="ml-auto text-gray-500 tabular-nums">{item.percentage}%</span>
+              <span className="text-stone-700 truncate">{(item as Record<string, unknown>)[nameKey] as string}</span>
+              <span className="ml-auto text-stone-500 font-mono tabular-nums">{item.percentage}%</span>
             </div>
           ))}
         </div>
