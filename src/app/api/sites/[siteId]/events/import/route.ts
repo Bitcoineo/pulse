@@ -11,7 +11,7 @@ export async function POST(
     const rl = rateLimit(`import:${userId}`, 10, 60_000);
     if (!rl.success) {
       return NextResponse.json(
-        { error: "Too many requests. Try again in a moment." },
+        { error: "Slow down. Try again in a moment." },
         { status: 429 }
       );
     }
@@ -25,7 +25,7 @@ export async function POST(
 
     if (rows.length > 50_000) {
       return NextResponse.json(
-        { error: "Too many events. Maximum 50,000 per import." },
+        { error: "Too many rows. Max 50,000." },
         { status: 413 }
       );
     }

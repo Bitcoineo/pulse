@@ -38,7 +38,7 @@ export default function RankingTable({
           </div>
         ))}
         {data.length === 0 && (
-          <p className="py-4 text-center text-sm text-stone-400">No data</p>
+          <p className="py-4 text-center text-sm text-stone-400">No data for this period.</p>
         )}
       </div>
     </div>

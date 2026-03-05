@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   const rl = rateLimit(`signup:${ip}`, 5, 60_000);
   if (!rl.success) {
     return NextResponse.json(
-      { error: "Too many requests. Try again in a moment." },
+      { error: "Slow down. Try again in a moment." },
       { status: 429 }
     );
   }
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   if (!email || !password || password.length < 8) {
     return NextResponse.json(
-      { error: "Email and password (8+ chars) required" },
+      { error: "Email and password (8+ chars) required." },
       { status: 400 }
     );
   }
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   if (existing) {
     return NextResponse.json(
-      { error: "Email already in use" },
+      { error: "Email already in use." },
       { status: 409 }
     );
   }

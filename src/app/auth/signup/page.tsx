@@ -25,7 +25,7 @@ export default function SignUpPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || "Something went wrong");
+        setError(data.error || "Something went wrong.");
         setLoading(false);
         return;
       }
@@ -36,7 +36,7 @@ export default function SignUpPage() {
         callbackUrl: "/sites",
       });
     } catch {
-      setError("Something went wrong");
+      setError("Something went wrong.");
       setLoading(false);
     }
   }
@@ -54,7 +54,7 @@ export default function SignUpPage() {
             <span className="text-xl font-bold text-stone-900">Pulse</span>
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-stone-900">Create your account</h1>
-          <p className="mt-1 text-sm text-stone-500">Start decoding your data</p>
+          <p className="mt-1 text-sm text-stone-500">Free. No card. No catch.</p>
         </div>
 
         <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
@@ -88,7 +88,7 @@ export default function SignUpPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all placeholder:text-stone-400"
-                placeholder="Your name"
+                placeholder="Name"
                 required
               />
             </div>
@@ -120,13 +120,13 @@ export default function SignUpPage() {
               disabled={loading}
               className="w-full rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-400 hover:shadow-lg hover:shadow-orange-500/20 disabled:opacity-50 transition-all"
             >
-              {loading ? "Creating account..." : "Create account"}
+              {loading ? "Setting up..." : "Create account"}
             </button>
           </form>
         </div>
 
         <p className="mt-6 text-center text-sm text-stone-500">
-          Already have an account?{" "}
+          Have an account?{" "}
           <Link href="/auth/signin" className="font-medium text-orange-500 hover:text-orange-400">
             Sign in
           </Link>

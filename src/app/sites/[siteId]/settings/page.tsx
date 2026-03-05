@@ -69,7 +69,7 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
         <h2 className="mb-4 text-lg font-semibold text-stone-900">General</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-1">Site name</label>
+            <label className="block text-sm font-medium text-stone-700 mb-1">Name</label>
             <input
               type="text"
               value={name}
@@ -95,10 +95,10 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
             disabled={saving}
             className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400 disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save changes"}
+            {saving ? "Saving..." : "Save"}
           </button>
           {saved && (
-            <span className="text-sm text-orange-600">Saved</span>
+            <span className="text-sm text-orange-600">Saved.</span>
           )}
         </div>
       </form>
@@ -107,7 +107,7 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
       <div className="mb-8 rounded-xl border border-stone-200 bg-white p-6">
         <h2 className="mb-2 text-lg font-semibold text-stone-900">Tracking snippet</h2>
         <p className="mb-4 text-sm text-stone-500">
-          Add this script to your website to start collecting events.
+          Add this to your site. Events start flowing immediately.
         </p>
         <pre className="rounded-lg bg-stone-50 border border-stone-200 p-4 text-xs font-mono text-stone-700 overflow-x-auto whitespace-pre">{`<script>
 fetch('${typeof window !== "undefined" ? window.location.origin : "https://your-pulse-url"}/api/collect', {
@@ -126,14 +126,14 @@ fetch('${typeof window !== "undefined" ? window.location.origin : "https://your-
 
       {/* Danger zone */}
       <div className="rounded-xl border border-red-200 bg-white p-6">
-        <h2 className="mb-2 text-lg font-semibold text-red-600">Danger zone</h2>
+        <h2 className="mb-2 text-lg font-semibold text-red-600">Delete site</h2>
         <p className="mb-4 text-sm text-stone-500">
-          Deleting this site will permanently remove all events, dashboards, and widgets. This cannot be undone.
+          Removes the site, all events, and all dashboards. Can&apos;t be undone.
         </p>
         <div className="space-y-3">
           <div>
             <label className="block text-sm text-stone-700 mb-1">
-              Type <span className="font-mono font-semibold">{site.name}</span> to confirm
+              Type the site name to confirm
             </label>
             <input
               type="text"
@@ -148,7 +148,7 @@ fetch('${typeof window !== "undefined" ? window.location.origin : "https://your-
             disabled={confirmName !== site.name || deleting}
             className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {deleting ? "Deleting..." : "Delete site"}
+            {deleting ? "Deleting..." : "Delete forever"}
           </button>
         </div>
       </div>

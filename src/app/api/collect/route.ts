@@ -9,19 +9,19 @@ export async function POST(req: NextRequest) {
   const { siteId, name, path, referrer, browser, os, device, country, city, duration, revenue, metadata } = body;
 
   if (!siteId || !name || !path) {
-    return NextResponse.json({ error: "siteId, name, and path are required" }, { status: 400 });
+    return NextResponse.json({ error: "siteId, name, and path are required." }, { status: 400 });
   }
 
   const rl = rateLimit(`collect:${siteId}`, 100, 60_000);
   if (!rl.success) {
-    return NextResponse.json({ error: "Too many requests. Try again in a moment." }, { status: 429 });
+    return NextResponse.json({ error: "Slow down. Try again in a moment." }, { status: 429 });
   }
 
   const site = await db.query.sites.findFirst({
     where: eq(sites.id, siteId),
   });
   if (!site) {
-    return NextResponse.json({ error: "Site not found" }, { status: 404 });
+    return NextResponse.json({ error: "Not found." }, { status: 404 });
   }
 
   await db.insert(events).values({

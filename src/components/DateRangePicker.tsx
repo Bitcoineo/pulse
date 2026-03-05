@@ -10,9 +10,9 @@ type Preset = {
 
 const presets: Preset[] = [
   { label: "Today", getRange: () => ({ start: new Date(), end: new Date() }) },
-  { label: "Last 7 days", getRange: () => ({ start: subDays(new Date(), 7), end: new Date() }) },
-  { label: "Last 30 days", getRange: () => ({ start: subDays(new Date(), 30), end: new Date() }) },
-  { label: "Last 90 days", getRange: () => ({ start: subDays(new Date(), 90), end: new Date() }) },
+  { label: "7 days", getRange: () => ({ start: subDays(new Date(), 7), end: new Date() }) },
+  { label: "30 days", getRange: () => ({ start: subDays(new Date(), 30), end: new Date() }) },
+  { label: "90 days", getRange: () => ({ start: subDays(new Date(), 90), end: new Date() }) },
   { label: "This month", getRange: () => ({ start: startOfMonth(new Date()), end: new Date() }) },
   { label: "Last month", getRange: () => ({ start: startOfMonth(subMonths(new Date(), 1)), end: endOfMonth(subMonths(new Date(), 1)) }) },
   { label: "This year", getRange: () => ({ start: startOfYear(new Date()), end: new Date() }) },
@@ -26,7 +26,7 @@ type Props = {
 
 export default function DateRangePicker({ startDate, endDate, onChange }: Props) {
   const [open, setOpen] = useState(false);
-  const [activePreset, setActivePreset] = useState("Last 30 days");
+  const [activePreset, setActivePreset] = useState("30 days");
   const [customStart, setCustomStart] = useState(startDate);
   const [customEnd, setCustomEnd] = useState(endDate);
   const ref = useRef<HTMLDivElement>(null);
@@ -92,7 +92,7 @@ export default function DateRangePicker({ startDate, endDate, onChange }: Props)
           </div>
 
           <div className="mt-3 border-t border-stone-100 pt-3">
-            <p className="mb-2 text-xs font-medium text-stone-500 uppercase">Custom Range</p>
+            <p className="mb-2 text-xs font-medium text-stone-500 uppercase">Custom</p>
             <div className="flex gap-2">
               <input
                 type="date"

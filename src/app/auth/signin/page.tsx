@@ -33,7 +33,7 @@ function SignInForm() {
     });
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError("Wrong email or password.");
       setLoading(false);
     } else {
       window.location.href = callbackUrl;
@@ -53,7 +53,6 @@ function SignInForm() {
             <span className="text-xl font-bold text-stone-900">Pulse</span>
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-stone-900">Welcome back</h1>
-          <p className="mt-1 text-sm text-stone-500">Sign in to your dashboard</p>
         </div>
 
         <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
@@ -87,7 +86,7 @@ function SignInForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all placeholder:text-stone-400"
-                placeholder="demo@example.com"
+                placeholder="Email"
                 required
               />
             </div>
@@ -98,7 +97,7 @@ function SignInForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all placeholder:text-stone-400"
-                placeholder="Enter your password"
+                placeholder="Password"
                 required
               />
             </div>
@@ -107,15 +106,15 @@ function SignInForm() {
               disabled={loading}
               className="w-full rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-400 hover:shadow-lg hover:shadow-orange-500/20 disabled:opacity-50 transition-all"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "One sec..." : "Continue"}
             </button>
           </form>
         </div>
 
         <p className="mt-6 text-center text-sm text-stone-500">
-          Don&apos;t have an account?{" "}
+          New here?{" "}
           <Link href="/auth/signup" className="font-medium text-orange-500 hover:text-orange-400">
-            Sign up
+            Create an account
           </Link>
         </p>
       </div>

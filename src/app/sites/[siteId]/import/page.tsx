@@ -134,10 +134,10 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
             </svg>
           </div>
           <p className="mt-4 text-sm font-medium text-stone-900">
-            Drop a CSV file here or click to browse
+            Drop a CSV here or click to browse.
           </p>
           <p className="mt-1 text-xs text-stone-500">
-            Required columns: name, path, timestamp. Revenue should be in dollars (e.g. 10.50).
+            Revenue values should be in dollars. We convert to cents.
           </p>
           <input
             ref={fileRef}
@@ -185,7 +185,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
           <div className="mb-6 rounded-xl border border-stone-200 bg-white overflow-hidden">
             <div className="px-6 py-4 border-b border-stone-100">
               <h2 className="text-sm font-semibold text-stone-700">
-                Preview (<span className="font-mono">{rows.length.toLocaleString()}</span> rows)
+                Preview — first 10 rows
               </h2>
             </div>
             <div className="overflow-x-auto">
@@ -220,6 +220,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
               className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-400 disabled:opacity-50 transition-colors"
             >
               {importing ? `Importing... ${progress}%` : `Import ${rows.length.toLocaleString()} events`}
+
             </button>
             <button
               onClick={() => { setRows([]); setHeaders([]); setMapping({}); }}
@@ -250,17 +251,17 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
               </svg>
             </div>
             <div>
-              <p className="text-lg font-semibold text-stone-900">Import complete</p>
+              <p className="text-lg font-semibold text-stone-900">Done</p>
               <p className="text-sm text-stone-500">
-                Imported <span className="font-mono">{result.imported.toLocaleString()}</span> events.
-                {result.skipped > 0 && ` ${result.skipped} rows skipped (invalid).`}
+                {result.imported.toLocaleString()} events imported.
+                {result.skipped > 0 && ` ${result.skipped} skipped.`}
               </p>
             </div>
           </div>
 
           {result.errors.length > 0 && (
             <div className="mt-4 rounded-lg bg-red-50 p-4">
-              <p className="mb-2 text-sm font-medium text-red-700">Errors:</p>
+              <p className="mb-2 text-sm font-medium text-red-700">{result.errors.length} rows have errors</p>
               <ul className="space-y-1 text-xs text-red-600 font-mono">
                 {result.errors.map((err, i) => (
                   <li key={i}>Row {err.row}: {err.error}</li>

@@ -54,7 +54,7 @@ function autoGranularity(startDate: string, endDate: string): "hour" | "day" | "
 function ErrorCard({ mutate }: { mutate: () => void }) {
   return (
     <div className="rounded-xl border border-stone-100 bg-white p-6 flex items-center justify-between">
-      <p className="text-sm text-stone-400">Failed to load. Try refreshing.</p>
+      <p className="text-sm text-stone-400">Failed to load. Refresh or try a different range.</p>
       <button
         onClick={mutate}
         className="rounded-lg px-3 py-1.5 text-sm font-medium text-orange-600 hover:bg-orange-50 transition-colors"
@@ -102,17 +102,17 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
         ) : overview ? (
           <>
             <MetricCard
-              label="Total Pageviews"
+              label="Pageviews"
               value={overview.totalPageviews.toLocaleString()}
               change={overview.changes.totalPageviews}
             />
             <MetricCard
-              label="Unique Visitors"
+              label="Visitors"
               value={overview.uniqueVisitors.toLocaleString()}
               change={overview.changes.uniqueVisitors}
             />
             <MetricCard
-              label="Avg Duration"
+              label="Avg. Duration"
               value={formatDuration(overview.avgDuration)}
               change={overview.changes.avgDuration}
             />
@@ -138,7 +138,7 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
         {pageviewsErr ? (
           <ErrorCard mutate={pageviewsMutate} />
         ) : pageviews ? (
-          <AreaChartCard title="Pageviews Over Time" data={pageviews} />
+          <AreaChartCard title="Pageviews" data={pageviews} />
         ) : (
           <SkeletonChart />
         )}
@@ -209,10 +209,10 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
       ) : hasRevenue && overview && overview.totalRevenue > 0 ? (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
           <div className="lg:col-span-3">
-            <BarChartCard title="Revenue Over Time" data={revenue} />
+            <BarChartCard title="Revenue" data={revenue} />
           </div>
           <MetricCard
-            label="Total Revenue"
+            label="Revenue"
             value={formatCents(overview.totalRevenue)}
             change={overview.changes.totalRevenue}
           />

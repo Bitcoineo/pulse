@@ -17,11 +17,10 @@ export default function MetricCard({ label, value, change, invertChange }: Props
         <p className={`mt-1 text-sm font-medium ${isPositive ? "text-orange-600" : "text-red-500"}`}>
           {isPositive ? "+" : ""}
           {change}%
-          <span className="ml-1 text-stone-400 font-normal">vs prev period</span>
         </p>
       )}
       {isNeutral && change !== undefined && (
-        <p className="mt-1 text-sm text-stone-400">No change</p>
+        <p className="mt-1 text-sm text-stone-400">0%</p>
       )}
     </div>
   );

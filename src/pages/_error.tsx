@@ -6,11 +6,11 @@ function Error({ statusCode }: { statusCode?: number }) {
           {statusCode || "Error"}
         </h1>
         <p style={{ marginTop: "0.5rem", fontSize: "1.125rem", color: "#6B7280" }}>
-          {statusCode === 404 ? "Page not found" : "Something went wrong"}
+          {statusCode === 404 ? "Not found." : "Something went wrong."}
         </p>
         <a
           href="/"
-          style={{ display: "inline-block", marginTop: "1.5rem", padding: "0.625rem 1.5rem", borderRadius: "0.75rem", backgroundColor: "#10B981", color: "white", fontSize: "0.875rem", fontWeight: 600, textDecoration: "none" }}
+          style={{ display: "inline-block", marginTop: "1.5rem", padding: "0.625rem 1.5rem", borderRadius: "0.75rem", backgroundColor: "#F97316", color: "white", fontSize: "0.875rem", fontWeight: 600, textDecoration: "none" }}
         >
           Go home
         </a>

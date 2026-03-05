@@ -38,23 +38,22 @@ export default function SitesPage() {
     <div className="mx-auto max-w-4xl px-6 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">Your sites</h1>
-          <p className="mt-1 text-sm text-stone-500">Track and manage your properties</p>
+          <h1 className="text-2xl font-bold text-stone-900">Sites</h1>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
           className="rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-400 hover:shadow-lg hover:shadow-orange-500/20 transition-all"
         >
-          + Add site
+          New site
         </button>
       </div>
 
       {showForm && (
         <form onSubmit={handleCreate} className="mb-8 rounded-xl border border-stone-200 bg-white p-6">
-          <h2 className="text-lg font-semibold text-stone-900 mb-4">Add a new site</h2>
+          <h2 className="text-lg font-semibold text-stone-900 mb-4">New site</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-stone-700 mb-1">Site name</label>
+              <label className="block text-sm font-medium text-stone-700 mb-1">Name</label>
               <input
                 type="text"
                 value={name}
@@ -71,7 +70,7 @@ export default function SitesPage() {
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
                 className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
-                placeholder="example.com"
+                placeholder="myapp.com"
                 required
               />
             </div>
@@ -89,7 +88,7 @@ export default function SitesPage() {
               disabled={creating}
               className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400 disabled:opacity-50"
             >
-              {creating ? "Creating..." : "Create site"}
+              {creating ? "Adding..." : "Add site"}
             </button>
           </div>
         </form>
@@ -137,7 +136,7 @@ export default function SitesPage() {
                 </svg>
               </div>
               <h3 className="mt-4 text-lg font-semibold text-stone-900">No sites yet</h3>
-              <p className="mt-1 text-sm text-stone-500">Add your first site to start tracking.</p>
+              <p className="mt-1 text-sm text-stone-500">Add one and start collecting data.</p>
             </div>
           )}
         </div>

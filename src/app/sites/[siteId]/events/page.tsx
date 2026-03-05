@@ -164,7 +164,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search path or referrer..."
+            placeholder="Search paths, referrers..."
             className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-orange-500"
           />
         </form>
@@ -182,7 +182,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
       <div className="rounded-xl border border-stone-100 bg-white overflow-hidden">
         {error ? (
           <div className="p-6 flex items-center justify-between">
-            <p className="text-sm text-stone-400">Failed to load. Try refreshing.</p>
+            <p className="text-sm text-stone-400">Failed to load. Refresh or try a different range.</p>
             <button onClick={() => mutate()} className="rounded-lg px-3 py-1.5 text-sm font-medium text-orange-600 hover:bg-orange-50 transition-colors">Retry</button>
           </div>
         ) : isLoading && !data ? (
@@ -238,7 +238,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
                 {data?.events.length === 0 && (
                   <tr>
                     <td colSpan={10} className="px-4 py-12 text-center text-stone-400">
-                      No events found
+                      No events match your filters.
                     </td>
                   </tr>
                 )}
