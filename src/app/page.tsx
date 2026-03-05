@@ -35,7 +35,7 @@ export default async function Home() {
       </nav>
 
       {/* Hero */}
-      <div className="mx-auto max-w-5xl px-6 pb-24 pt-16 text-center">
+      <div className="mx-auto max-w-5xl px-6 pb-10 pt-12 text-center">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-1.5 text-sm font-medium text-orange-600">
           <span className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
           Signal over noise
@@ -132,7 +132,7 @@ export default async function Home() {
       </div>
 
       {/* Features */}
-      <div className="py-20">
+      <div className="py-12">
         <div className="mx-auto max-w-5xl px-6">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {[
@@ -167,13 +167,13 @@ export default async function Home() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 py-16">
+      <div className="bg-gradient-to-r from-orange-500 to-orange-600 py-12">
         <div className="mx-auto max-w-5xl px-6 text-center">
           <h2 className="text-3xl font-bold text-white">Ready to decode your data?</h2>
           <p className="mt-3 text-orange-100">Set up in under a minute. No credit card required.</p>
           <Link
             href="/auth/signup"
-            className="mt-8 inline-block rounded-xl bg-white px-6 py-3 text-sm font-semibold text-orange-600 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+            className="mt-6 inline-block rounded-xl bg-white px-6 py-3 text-sm font-semibold text-orange-600 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
           >
             Start tracking free
           </Link>
@@ -181,7 +181,7 @@ export default async function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-stone-100 py-8">
+      <footer className="border-t border-stone-100 py-6">
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex items-center justify-center gap-4">
             <p className="text-sm text-stone-400">Built by Bitcoineo</p>
