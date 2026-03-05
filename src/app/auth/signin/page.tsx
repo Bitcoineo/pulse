@@ -41,7 +41,7 @@ function SignInForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-stone-950 via-stone-900 to-stone-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#FAFAF9] px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2">
@@ -50,16 +50,16 @@ function SignInForm() {
                 <polyline points="4 16 8 10 12 14 16 8 20 12" />
               </svg>
             </div>
-            <span className="text-xl font-bold text-white">Pulse</span>
+            <span className="text-xl font-bold text-stone-900">Pulse</span>
           </Link>
-          <h1 className="mt-6 text-2xl font-bold text-white">Welcome back</h1>
-          <p className="mt-1 text-sm text-stone-400">Sign in to your dashboard</p>
+          <h1 className="mt-6 text-2xl font-bold text-stone-900">Welcome back</h1>
+          <p className="mt-1 text-sm text-stone-500">Sign in to your dashboard</p>
         </div>
 
-        <div className="rounded-2xl border border-stone-800 bg-stone-900 p-6">
+        <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
           <button
             onClick={() => signIn("google", { callbackUrl })}
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-stone-700 bg-stone-800 px-4 py-2.5 text-sm font-medium text-stone-300 hover:bg-stone-700 transition-colors"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -71,33 +71,33 @@ function SignInForm() {
           </button>
 
           <div className="my-6 flex items-center gap-3">
-            <div className="h-px flex-1 bg-stone-700" />
-            <span className="text-xs text-stone-500">or</span>
-            <div className="h-px flex-1 bg-stone-700" />
+            <div className="h-px flex-1 bg-stone-200" />
+            <span className="text-xs text-stone-400">or</span>
+            <div className="h-px flex-1 bg-stone-200" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-sm text-red-400">{error}</div>
+              <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-600">{error}</div>
             )}
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">Email</label>
+              <label className="block text-sm font-medium text-stone-700 mb-1">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-stone-700 bg-stone-800 px-4 py-2.5 text-sm text-white outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all placeholder:text-stone-600"
+                className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all placeholder:text-stone-400"
                 placeholder="demo@example.com"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-400 mb-1">Password</label>
+              <label className="block text-sm font-medium text-stone-700 mb-1">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-xl border border-stone-700 bg-stone-800 px-4 py-2.5 text-sm text-white outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all placeholder:text-stone-600"
+                className="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all placeholder:text-stone-400"
                 placeholder="Enter your password"
                 required
               />
