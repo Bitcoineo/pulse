@@ -63,30 +63,69 @@ export default async function Home() {
           </Link>
         </div>
 
-        {/* Dashboard preview */}
-        <div className="mt-16 rounded-2xl border border-stone-200 bg-white p-2 shadow-xl">
+        {/* Dashboard preview — animated */}
+        <div className="mt-16 mock-container rounded-2xl border border-stone-200 bg-white p-2 shadow-xl">
           <div className="rounded-xl bg-[#FAFAF9] p-6">
+            {/* Metric cards with stagger + count-up */}
             <div className="grid grid-cols-4 gap-3 mb-5">
-              {[
-                { value: "12,847", label: "Pageviews" },
-                { value: "3,421", label: "Unique visitors" },
-                { value: "2m 34s", label: "Avg session" },
-                { value: "42.1%", label: "Bounce rate" },
-              ].map((m) => (
-                <div key={m.label} className="rounded-lg bg-white border border-stone-200 p-3 border-l-2 border-l-orange-500">
-                  <p className="text-xl font-bold text-stone-900 font-mono">{m.value}</p>
-                  <p className="text-xs text-stone-500">{m.label}</p>
-                </div>
-              ))}
+              <div className="mock-card rounded-lg bg-white border border-stone-200 p-3 border-l-2 border-l-orange-500">
+                <p className="text-xl font-bold text-stone-900 font-mono mock-num-pv" />
+                <p className="text-xs text-stone-500">Pageviews</p>
+              </div>
+              <div className="mock-card rounded-lg bg-white border border-stone-200 p-3 border-l-2 border-l-orange-500">
+                <p className="text-xl font-bold text-stone-900 font-mono mock-num-vis" />
+                <p className="text-xs text-stone-500">Unique visitors</p>
+              </div>
+              <div className="mock-card rounded-lg bg-white border border-stone-200 p-3 border-l-2 border-l-orange-500">
+                <p className="text-xl font-bold text-stone-900 font-mono">2m 34s</p>
+                <p className="text-xs text-stone-500">Avg session</p>
+              </div>
+              <div className="mock-card rounded-lg bg-white border border-stone-200 p-3 border-l-2 border-l-orange-500">
+                <p className="text-xl font-bold text-stone-900 font-mono">42.1%</p>
+                <p className="text-xs text-stone-500">Bounce rate</p>
+              </div>
             </div>
-            <div className="h-32 rounded-lg bg-white border border-stone-200 flex items-end px-3 pb-3 gap-1">
-              {[30, 45, 35, 60, 55, 70, 65, 80, 75, 90, 85, 95, 88, 92, 78, 85, 70].map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-t bg-orange-500/30"
-                  style={{ height: `${h}%` }}
+
+            {/* Area chart — line draws, then fill fades in + pulses */}
+            <div className="h-32 rounded-lg bg-white border border-stone-200 overflow-hidden">
+              <svg viewBox="0 0 500 128" className="w-full h-full" preserveAspectRatio="none">
+                <path
+                  className="mock-chart-fill"
+                  d="M10,92 L40,74 L70,86 L100,56 L130,62 L160,44 L190,50 L220,32 L250,38 L280,20 L310,26 L340,14 L370,22 L400,18 L430,34 L460,26 L490,44 L490,128 L10,128 Z"
+                  fill="#F97316"
                 />
-              ))}
+                <polyline
+                  className="mock-chart-line"
+                  points="10,92 40,74 70,86 100,56 130,62 160,44 190,50 220,32 250,38 280,20 310,26 340,14 370,22 400,18 430,34 460,26 490,44"
+                  fill="none"
+                  stroke="#F97316"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength={1}
+                />
+              </svg>
+            </div>
+
+            {/* Mini table — rows slide in from left */}
+            <div className="mt-3 rounded-lg bg-white border border-stone-200 overflow-hidden">
+              <div className="px-3 py-1.5 border-b border-stone-100 flex text-[10px] font-medium text-stone-400 uppercase">
+                <span className="flex-1">Top pages</span>
+                <span>Views</span>
+              </div>
+              <div>
+                {[
+                  { path: "/home", views: "4,281" },
+                  { path: "/pricing", views: "2,847" },
+                  { path: "/blog", views: "1,923" },
+                  { path: "/docs", views: "1,456" },
+                ].map((row) => (
+                  <div key={row.path} className="mock-row flex px-3 py-1.5 text-xs border-b border-stone-50 last:border-0">
+                    <span className="flex-1 text-stone-700 font-mono">{row.path}</span>
+                    <span className="text-stone-900 font-mono font-medium">{row.views}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

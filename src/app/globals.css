@@ -6,3 +6,102 @@ body {
   color: #1C1917;
   background: #FAFAF9;
 }
+
+/* ===== Dashboard Mockup Animations ===== */
+
+/* Container slide up */
+.mock-container {
+  opacity: 0;
+  animation: mockSlideUp 600ms ease-out 300ms forwards;
+}
+@keyframes mockSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Metric cards stagger */
+.mock-card {
+  opacity: 0;
+  animation: mockCardIn 400ms ease-out forwards;
+}
+.mock-card:nth-child(1) { animation-delay: 600ms; }
+.mock-card:nth-child(2) { animation-delay: 750ms; }
+.mock-card:nth-child(3) { animation-delay: 900ms; }
+.mock-card:nth-child(4) { animation-delay: 1050ms; }
+@keyframes mockCardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Number count-up via CSS @property */
+@property --num-pv {
+  syntax: '<integer>';
+  initial-value: 0;
+  inherits: false;
+}
+@property --num-vis {
+  syntax: '<integer>';
+  initial-value: 0;
+  inherits: false;
+}
+
+.mock-num-pv {
+  counter-reset: pv var(--num-pv);
+  animation: countPV 1.5s ease-out 700ms forwards;
+}
+.mock-num-pv::after {
+  content: counter(pv);
+}
+@keyframes countPV {
+  from { --num-pv: 0; }
+  to { --num-pv: 12847; }
+}
+
+.mock-num-vis {
+  counter-reset: vis var(--num-vis);
+  animation: countVis 1.5s ease-out 850ms forwards;
+}
+.mock-num-vis::after {
+  content: counter(vis);
+}
+@keyframes countVis {
+  from { --num-vis: 0; }
+  to { --num-vis: 3421; }
+}
+
+/* Chart line draw */
+.mock-chart-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: mockDrawLine 1.5s ease-in-out 1200ms forwards;
+}
+@keyframes mockDrawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Chart fill fade + continuous pulse */
+.mock-chart-fill {
+  opacity: 0;
+  animation: mockFillIn 500ms ease-out 2500ms forwards, mockPulse 4s ease-in-out 3200ms infinite;
+}
+@keyframes mockFillIn {
+  to { opacity: 0.2; }
+}
+@keyframes mockPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.28; }
+}
+
+/* Table rows slide in from left */
+.mock-row {
+  opacity: 0;
+  animation: mockRowIn 400ms ease-out forwards;
+}
+.mock-row:nth-child(1) { animation-delay: 2000ms; }
+.mock-row:nth-child(2) { animation-delay: 2100ms; }
+.mock-row:nth-child(3) { animation-delay: 2200ms; }
+.mock-row:nth-child(4) { animation-delay: 2300ms; }
+@keyframes mockRowIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
