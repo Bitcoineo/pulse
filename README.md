@@ -1,164 +1,74 @@
-# Pulse - Analytics Dashboard
+# Pulse
 
-A web analytics dashboard for tracking website metrics. Import data via CSV or API, visualize with interactive charts, filter by date ranges, and export reports.
+Web analytics dashboard. Track pageviews, visitors, referrers, devices, countries, and revenue across multiple sites. Import events via CSV or API, export filtered reports, visualize everything with interactive charts.
 
-## Tech Stack
+**Stack:** `Next.js 14 · TypeScript · Auth.js v5 · Drizzle ORM · Turso (SQLite) · Recharts · SWR · Papaparse · Tailwind CSS`
 
-- **Framework**: Next.js 14 (App Router), TypeScript
-- **Database**: Drizzle ORM + Turso (libSQL)
-- **Auth**: Auth.js v5 (Google OAuth + email/password)
-- **Charts**: Recharts
-- **CSV**: Papaparse (import/export)
-- **Styling**: Tailwind CSS, Plus Jakarta Sans
-- **Data fetching**: SWR with auto-refresh
+**Live:** https://pulse-bitcoineo.vercel.app
 
-## Getting Started
+---
 
-```bash
-# Install dependencies
-pnpm install
+## Why I built this
 
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your Turso URL, auth secret, Google OAuth credentials
-
-# Run migrations
-pnpm db:migrate
-
-# Seed demo data (12,000+ events)
-pnpm db:seed
-
-# Start dev server
-pnpm dev
-```
-
-Demo credentials: `demo@example.com` / `password123`
+I wanted to understand how analytics platforms aggregate data at query time rather than storing pre-computed results. Every chart in Pulse runs a live SQL aggregation against the events table filtered by date range and site ID. The schema indexes on (siteId, timestamp), (siteId, name), and (siteId, path) so those queries stay fast even with 12,000+ events in the seed data.
 
 ## Features
 
-### Dashboard
-- Metric cards: pageviews, visitors, avg duration, bounce rate
-- Pageviews over time (area chart)
-- Top pages and referrers (ranking tables with proportional bars)
-- Browser, device, and country breakdowns (donut charts + tables)
-- Revenue tracking (bar chart, conditional on purchase events)
-- Date range picker with presets (today, 7d, 30d, 90d, month, year)
-- Auto-refresh every 60 seconds
+- **Dashboard** Pageviews, visitors, avg duration, bounce rate with period-over-period change
+- **Charts** Area chart for pageviews over time, bar chart for revenue, donut charts for browser/device/country breakdowns
+- **Top pages and referrers** Ranking tables with proportional bars
+- **Date range picker** Presets (today, 7d, 30d, 90d, month, year) plus custom range
+- **Events log** Paginated table with server-side sorting, type filter, path/referrer search, and date range filter
+- **CSV import** Drag-and-drop upload, auto column mapping, 10-row preview, per-row validation
+- **CSV export** Download all events matching current filters
+- **Multi-site** Create and manage multiple tracked sites
+- **Auto-refresh** Dashboard refreshes every 60 seconds via SWR
 
-### Events Log
-- Paginated table with all raw events (50 per page)
-- Server-side sorting (click column headers)
-- Filter by event type (pageview, click, signup, purchase)
-- Search across paths and referrers
-- Date range filtering
-- Export filtered results as CSV
+## Setup
 
-### CSV Import
-- Drag-and-drop file upload
-- Auto-detect column mapping from headers
-- Preview first 10 rows before importing
-- Validation with per-row error reporting
-- Batch import with progress indicator
+    pnpm install
+    cp .env.example .env.local
 
-### CSV Export
-- Export all events matching current filters
-- Downloads as CSV with all event fields
+Fill in your .env.local:
 
-### Site Management
-- Create multiple sites
-- Edit site name and domain
-- Delete site with name confirmation
+    DATABASE_URL=           # Turso database URL
+    DATABASE_AUTH_TOKEN=    # Turso auth token
+    AUTH_SECRET=            # openssl rand -base64 32
+    GOOGLE_CLIENT_ID=       # Google OAuth client ID
+    GOOGLE_CLIENT_SECRET=   # Google OAuth client secret
+    NEXT_PUBLIC_BASE_URL=   # http://localhost:3000 for dev
 
-## Scripts
+Run migrations, seed demo data, and start:
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start development server |
-| `pnpm build` | Production build |
-| `pnpm db:generate` | Generate Drizzle migrations |
-| `pnpm db:migrate` | Run migrations |
-| `pnpm db:seed` | Seed demo data |
-| `pnpm db:studio` | Open Drizzle Studio |
+    pnpm db:migrate
+    pnpm db:seed
+    pnpm dev
 
-## Database Schema
+Open http://localhost:3000
 
-- **user** - Auth users with optional password
-- **account** - OAuth accounts (Google)
-- **session** / **verificationToken** - Auth.js internals
-- **site** - User's tracked websites
-- **event** - Core data: pageviews, clicks, signups, purchases with properties
-- **dashboard** - Named dashboard layouts
-- **widget** - Chart/metric configurations
-
-Events are indexed on `(siteId, timestamp)`, `(siteId, name)`, and `(siteId, path)` for fast aggregation queries.
+Demo credentials: demo@example.com / password123
 
 ## API Routes
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/api/auth/signup` | POST | Create account |
-| `/api/sites` | GET, POST | List/create sites |
-| `/api/sites/[id]` | GET, PATCH, DELETE | Site CRUD |
-| `/api/sites/[id]/events` | GET | Paginated event list |
-| `/api/sites/[id]/events/import` | POST | Batch import events |
-| `/api/sites/[id]/events/export` | GET | Export filtered CSV |
-| `/api/sites/[id]/analytics/overview` | GET | Metric totals + changes |
-| `/api/sites/[id]/analytics/pageviews` | GET | Pageviews over time |
-| `/api/sites/[id]/analytics/pages` | GET | Top pages |
-| `/api/sites/[id]/analytics/referrers` | GET | Top referrers |
-| `/api/sites/[id]/analytics/browsers` | GET | Browser breakdown |
-| `/api/sites/[id]/analytics/devices` | GET | Device breakdown |
-| `/api/sites/[id]/analytics/countries` | GET | Country breakdown |
-| `/api/sites/[id]/analytics/revenue` | GET | Revenue over time |
+| Route | Description |
+|-------|-------------|
+| GET /api/sites | List sites |
+| POST /api/sites | Create site |
+| GET /api/sites/[id]/analytics/overview | Metric totals with period-over-period change |
+| GET /api/sites/[id]/analytics/pageviews | Pageviews over time |
+| GET /api/sites/[id]/analytics/pages | Top pages |
+| GET /api/sites/[id]/analytics/referrers | Top referrers |
+| GET /api/sites/[id]/analytics/browsers | Browser breakdown |
+| GET /api/sites/[id]/analytics/devices | Device breakdown |
+| GET /api/sites/[id]/analytics/countries | Country breakdown |
+| GET /api/sites/[id]/analytics/revenue | Revenue over time |
+| GET /api/sites/[id]/events | Paginated event list |
+| POST /api/sites/[id]/events/import | Batch CSV import |
+| GET /api/sites/[id]/events/export | Export filtered CSV |
+| POST /api/collect | Ingest a new event |
 
-All site routes verify ownership. Analytics routes accept `start` and `end` date params.
+All site routes verify ownership. Analytics routes accept start and end date params.
 
-## Project Structure
+## GitHub Topics
 
-```
-src/
-  app/
-    page.tsx                    Landing page
-    auth/signin, signup/        Auth pages
-    sites/page.tsx              Sites list
-    sites/[siteId]/
-      page.tsx                  Dashboard
-      events/page.tsx           Events log
-      import/page.tsx           CSV import
-      settings/page.tsx         Site settings
-      layout.tsx                Site navigation
-    api/
-      auth/signup/              Registration
-      sites/                    Sites CRUD
-      sites/[siteId]/           Site CRUD
-      sites/[siteId]/events/    Events list + import + export
-      sites/[siteId]/analytics/ 8 analytics endpoints
-  components/
-    DateRangePicker.tsx         Date range selector
-    MetricCard.tsx              Metric display card
-    Navbar.tsx                  Top navigation
-    SiteNav.tsx                 Site tab navigation
-    RankingTable.tsx            Ranked list with bars
-    CountryTable.tsx            Country breakdown table
-    Skeleton.tsx                Loading skeletons
-    charts/
-      AreaChartCard.tsx         Time series area chart
-      BarChartCard.tsx          Revenue bar chart
-      DonutChartCard.tsx        Pie/donut breakdown
-  db/
-    schema.ts                   Drizzle schema (8 tables)
-    index.ts                    Database client
-    migrate.ts                  Migration runner
-    seed.ts                     Demo data seeder
-  lib/
-    analytics.ts                Analytics query functions
-    events.ts                   Event list/import/export queries
-    hooks.ts                    SWR hooks
-    api-utils.ts                API auth helpers
-    permissions.ts              Site ownership checks
-  auth.ts                       Auth.js configuration
-  auth.config.ts                Edge-compatible auth config
-  middleware.ts                 Route protection
-```
-
-Built by Bitcoineo.
+`nextjs` `typescript` `analytics` `dashboard` `recharts` `drizzle-orm` `turso` `sqlite` `authjs` `swr` `csv` `tailwind`
