@@ -3,10 +3,9 @@
 import { useState } from "react";
 import { subDays, format } from "date-fns";
 import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 import DateRangePicker from "@/components/DateRangePicker";
 import { SkeletonTable } from "@/components/Skeleton";
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 type Event = {
   id: string;
@@ -79,7 +78,7 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
   if (type) queryParams.set("type", type);
   if (search) queryParams.set("search", search);
 
-  const { data, isLoading } = useSWR<EventsResponse>(
+  const { data, isLoading, error, mutate } = useSWR<EventsResponse>(
     `/api/sites/${siteId}/events?${queryParams}`,
     fetcher,
     { revalidateOnFocus: false }
@@ -181,7 +180,12 @@ export default function EventsPage({ params }: { params: { siteId: string } }) {
 
       {/* Table */}
       <div className="rounded-xl border border-stone-100 bg-white overflow-hidden">
-        {isLoading && !data ? (
+        {error ? (
+          <div className="p-6 flex items-center justify-between">
+            <p className="text-sm text-stone-400">Failed to load. Try refreshing.</p>
+            <button onClick={() => mutate()} className="rounded-lg px-3 py-1.5 text-sm font-medium text-orange-600 hover:bg-orange-50 transition-colors">Retry</button>
+          </div>
+        ) : isLoading && !data ? (
           <div className="p-6">
             <SkeletonTable rows={10} />
           </div>

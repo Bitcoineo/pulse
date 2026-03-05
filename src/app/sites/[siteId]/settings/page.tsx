@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from "@/lib/fetcher";
 
 type Site = { id: string; name: string; domain: string };
 
@@ -21,10 +20,12 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
   const [confirmName, setConfirmName] = useState("");
   const [deleting, setDeleting] = useState(false);
 
-  if (site && !name && !domain) {
-    setName(site.name);
-    setDomain(site.domain);
-  }
+  useEffect(() => {
+    if (site) {
+      setName(site.name);
+      setDomain(site.domain);
+    }
+  }, [site]);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -101,6 +102,27 @@ export default function SettingsPage({ params }: { params: { siteId: string } })
           )}
         </div>
       </form>
+
+      {/* Tracking snippet */}
+      <div className="mb-8 rounded-xl border border-stone-200 bg-white p-6">
+        <h2 className="mb-2 text-lg font-semibold text-stone-900">Tracking snippet</h2>
+        <p className="mb-4 text-sm text-stone-500">
+          Add this script to your website to start collecting events.
+        </p>
+        <pre className="rounded-lg bg-stone-50 border border-stone-200 p-4 text-xs font-mono text-stone-700 overflow-x-auto whitespace-pre">{`<script>
+fetch('${typeof window !== "undefined" ? window.location.origin : "https://your-pulse-url"}/api/collect', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    siteId: '${siteId}',
+    name: 'pageview',
+    path: window.location.pathname,
+    referrer: document.referrer,
+    browser: navigator.userAgent
+  })
+});
+</script>`}</pre>
+      </div>
 
       {/* Danger zone */}
       <div className="rounded-xl border border-red-200 bg-white p-6">

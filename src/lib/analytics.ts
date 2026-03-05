@@ -17,52 +17,55 @@ export async function getOverviewMetrics(
   endDate: string
 ) {
   const range = { siteId, startDate, endDate };
+  const pvFilter = and(dateFilter(range), eq(events.name, "pageview"));
 
-  const [pageviewResult] = await db
-    .select({ count: count() })
-    .from(events)
-    .where(and(dateFilter(range), eq(events.name, "pageview")));
-
-  const [visitorResult] = await db
-    .select({
-      count: sql<number>`COUNT(DISTINCT (${events.browser} || ${events.os} || ${events.country}))`,
-    })
-    .from(events)
-    .where(and(dateFilter(range), eq(events.name, "pageview")));
-
-  const [durationResult] = await db
-    .select({ avg: avg(events.duration) })
-    .from(events)
-    .where(and(dateFilter(range), eq(events.name, "pageview")));
-
-  // Bounce rate: approximate as % of date+visitor combos with only 1 pageview
-  const bounceData = await db
-    .select({
-      visitorHash: sql<string>`(${events.browser} || ${events.os} || ${events.country})`,
-      dateStr: sql<string>`DATE(${events.timestamp})`,
-      pvCount: count(),
-    })
-    .from(events)
-    .where(and(dateFilter(range), eq(events.name, "pageview")))
-    .groupBy(
-      sql`(${events.browser} || ${events.os} || ${events.country})`,
-      sql`DATE(${events.timestamp})`
-    );
-
-  const totalSessions = bounceData.length;
-  const bouncedSessions = bounceData.filter((s) => s.pvCount === 1).length;
-  const bounceRate = totalSessions > 0 ? (bouncedSessions / totalSessions) * 100 : 0;
-
-  const [revenueResult] = await db
-    .select({ total: sum(events.revenue) })
-    .from(events)
-    .where(and(dateFilter(range), eq(events.name, "purchase")));
+  const [
+    [pageviewResult],
+    [visitorResult],
+    [durationResult],
+    [bounceResult],
+    [revenueResult],
+  ] = await Promise.all([
+    db.select({ count: count() }).from(events).where(pvFilter),
+    db
+      .select({
+        count: sql<number>`COUNT(DISTINCT (${events.browser} || ${events.os} || ${events.country}))`,
+      })
+      .from(events)
+      .where(pvFilter),
+    db.select({ avg: avg(events.duration) }).from(events).where(pvFilter),
+    db
+      .select({
+        bounceRate: sql<number>`
+          CAST(
+            SUM(CASE WHEN sub.pvCount = 1 THEN 1 ELSE 0 END) AS REAL
+          ) * 100.0 / MAX(COUNT(*), 1)
+        `.as("bounceRate"),
+      })
+      .from(
+        db
+          .select({
+            pvCount: count().as("pvCount"),
+          })
+          .from(events)
+          .where(pvFilter)
+          .groupBy(
+            sql`(${events.browser} || ${events.os} || ${events.country})`,
+            sql`DATE(${events.timestamp})`
+          )
+          .as("sub")
+      ),
+    db
+      .select({ total: sum(events.revenue) })
+      .from(events)
+      .where(and(dateFilter(range), eq(events.name, "purchase"))),
+  ]);
 
   return {
     totalPageviews: pageviewResult.count,
     uniqueVisitors: visitorResult.count,
     avgDuration: Math.round(Number(durationResult.avg) || 0),
-    bounceRate: Math.round(bounceRate * 10) / 10,
+    bounceRate: Math.round((Number(bounceResult.bounceRate) || 0) * 10) / 10,
     totalRevenue: Number(revenueResult.total) || 0,
   };
 }

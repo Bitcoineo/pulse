@@ -90,6 +90,7 @@ export const events = sqliteTable(
     index("event_site_timestamp_idx").on(table.siteId, table.timestamp),
     index("event_site_name_idx").on(table.siteId, table.name),
     index("event_site_path_idx").on(table.siteId, table.path),
+    index("event_site_name_ts_idx").on(table.siteId, table.name, table.timestamp),
   ]
 );
 

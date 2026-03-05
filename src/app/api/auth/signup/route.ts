@@ -3,8 +3,18 @@ import bcrypt from "bcryptjs";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
+  const rl = rateLimit(`signup:${ip}`, 5, 60_000);
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: "Too many requests. Try again in a moment." },
+      { status: 429 }
+    );
+  }
+
   const { name, email, password } = await req.json();
 
   if (!email || !password || password.length < 8) {

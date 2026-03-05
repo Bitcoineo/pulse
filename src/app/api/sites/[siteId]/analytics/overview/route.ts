@@ -10,16 +10,16 @@ export async function GET(
     const range = parseDateRange(searchParams);
     if (!range) return jsonError("start and end params required");
 
-    const metrics = await getOverviewMetrics(siteId, range.startDate, range.endDate);
-
-    // Calculate previous period for comparison
     const startMs = new Date(range.startDate).getTime();
     const endMs = new Date(range.endDate).getTime();
     const periodLength = endMs - startMs;
     const prevStart = new Date(startMs - periodLength).toISOString();
     const prevEnd = range.startDate;
 
-    const prevMetrics = await getOverviewMetrics(siteId, prevStart, prevEnd);
+    const [metrics, prevMetrics] = await Promise.all([
+      getOverviewMetrics(siteId, range.startDate, range.endDate),
+      getOverviewMetrics(siteId, prevStart, prevEnd),
+    ]);
 
     function pctChange(current: number, previous: number) {
       if (previous === 0) return current > 0 ? 100 : 0;

@@ -1,17 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authenticatedSiteHandler, jsonError } from "@/lib/api-utils";
 import { batchInsertEvents } from "@/lib/events";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(
   req: NextRequest,
   { params }: { params: { siteId: string } }
 ) {
-  return authenticatedSiteHandler(req, params.siteId, async (_userId, siteId) => {
+  return authenticatedSiteHandler(req, params.siteId, async (userId, siteId) => {
+    const rl = rateLimit(`import:${userId}`, 10, 60_000);
+    if (!rl.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Try again in a moment." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { events: rows } = body;
 
     if (!Array.isArray(rows) || rows.length === 0) {
       return jsonError("Events array is required");
+    }
+
+    if (rows.length > 50_000) {
+      return NextResponse.json(
+        { error: "Too many events. Maximum 50,000 per import." },
+        { status: 413 }
+      );
     }
 
     const valid: typeof rows = [];
@@ -28,11 +44,18 @@ export async function POST(
         errors.push({ row: i + 1, error: "Invalid timestamp" });
         continue;
       }
+
+      let revenue: number | null = null;
+      if (row.revenue) {
+        const parsed = Math.round(parseFloat(row.revenue) * 100);
+        revenue = isNaN(parsed) ? null : parsed;
+      }
+
       valid.push({
         ...row,
         timestamp: d.toISOString(),
         duration: row.duration ? parseInt(row.duration, 10) || null : null,
-        revenue: row.revenue ? parseInt(row.revenue, 10) || null : null,
+        revenue,
       });
     }
 

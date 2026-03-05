@@ -1,0 +1,1 @@
+CREATE INDEX `event_site_name_ts_idx` ON `event` (`siteId`,`name`,`timestamp`);

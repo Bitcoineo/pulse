@@ -44,19 +44,42 @@ function formatCents(cents: number): string {
   return `$${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
 }
 
+function autoGranularity(startDate: string, endDate: string): "hour" | "day" | "week" {
+  const days = (new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24);
+  if (days <= 2) return "hour";
+  if (days <= 90) return "day";
+  return "week";
+}
+
+function ErrorCard({ mutate }: { mutate: () => void }) {
+  return (
+    <div className="rounded-xl border border-stone-100 bg-white p-6 flex items-center justify-between">
+      <p className="text-sm text-stone-400">Failed to load. Try refreshing.</p>
+      <button
+        onClick={mutate}
+        className="rounded-lg px-3 py-1.5 text-sm font-medium text-orange-600 hover:bg-orange-50 transition-colors"
+      >
+        Retry
+      </button>
+    </div>
+  );
+}
+
 export default function DashboardPage({ params }: { params: { siteId: string } }) {
   const { siteId } = params;
   const [startDate, setStartDate] = useState(subDays(new Date(), 30).toISOString());
   const [endDate, setEndDate] = useState(new Date().toISOString());
 
-  const { data: overview } = useAnalytics<OverviewData>(siteId, "overview", startDate, endDate);
-  const { data: pageviews } = useAnalytics<PageviewPoint[]>(siteId, "pageviews", startDate, endDate, { granularity: "day" });
-  const { data: pages } = useAnalytics<PageRow[]>(siteId, "pages", startDate, endDate);
-  const { data: referrers } = useAnalytics<ReferrerRow[]>(siteId, "referrers", startDate, endDate);
-  const { data: browsers } = useAnalytics<BreakdownRow[]>(siteId, "browsers", startDate, endDate);
-  const { data: devices } = useAnalytics<BreakdownRow[]>(siteId, "devices", startDate, endDate);
-  const { data: countries } = useAnalytics<CountryRow[]>(siteId, "countries", startDate, endDate);
-  const { data: revenue } = useAnalytics<RevenuePoint[]>(siteId, "revenue", startDate, endDate);
+  const granularity = autoGranularity(startDate, endDate);
+
+  const { data: overview, error: overviewErr, mutate: overviewMutate } = useAnalytics<OverviewData>(siteId, "overview", startDate, endDate);
+  const { data: pageviews, error: pageviewsErr, mutate: pageviewsMutate } = useAnalytics<PageviewPoint[]>(siteId, "pageviews", startDate, endDate, { granularity });
+  const { data: pages, error: pagesErr, mutate: pagesMutate } = useAnalytics<PageRow[]>(siteId, "pages", startDate, endDate);
+  const { data: referrers, error: referrersErr, mutate: referrersMutate } = useAnalytics<ReferrerRow[]>(siteId, "referrers", startDate, endDate);
+  const { data: browsers, error: browsersErr, mutate: browsersMutate } = useAnalytics<BreakdownRow[]>(siteId, "browsers", startDate, endDate);
+  const { data: devices, error: devicesErr, mutate: devicesMutate } = useAnalytics<BreakdownRow[]>(siteId, "devices", startDate, endDate);
+  const { data: countries, error: countriesErr, mutate: countriesMutate } = useAnalytics<CountryRow[]>(siteId, "countries", startDate, endDate);
+  const { data: revenue, error: revenueErr, mutate: revenueMutate } = useAnalytics<RevenuePoint[]>(siteId, "revenue", startDate, endDate);
 
   function handleDateChange(start: string, end: string) {
     setStartDate(start);
@@ -74,7 +97,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
 
       {/* ROW 1: Metric cards */}
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {overview ? (
+        {overviewErr ? (
+          <div className="sm:col-span-2 lg:col-span-4"><ErrorCard mutate={overviewMutate} /></div>
+        ) : overview ? (
           <>
             <MetricCard
               label="Total Pageviews"
@@ -110,7 +135,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
 
       {/* ROW 2: Pageviews over time */}
       <div className="mb-6">
-        {pageviews ? (
+        {pageviewsErr ? (
+          <ErrorCard mutate={pageviewsMutate} />
+        ) : pageviews ? (
           <AreaChartCard title="Pageviews Over Time" data={pageviews} />
         ) : (
           <SkeletonChart />
@@ -119,7 +146,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
 
       {/* ROW 3: Top Pages + Referrers */}
       <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {pages ? (
+        {pagesErr ? (
+          <ErrorCard mutate={pagesMutate} />
+        ) : pages ? (
           <RankingTable
             title="Top Pages"
             data={pages.map((p) => ({ label: p.path, count: p.count }))}
@@ -129,7 +158,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
         ) : (
           <SkeletonTable />
         )}
-        {referrers ? (
+        {referrersErr ? (
+          <ErrorCard mutate={referrersMutate} />
+        ) : referrers ? (
           <RankingTable
             title="Top Referrers"
             data={referrers.map((r) => ({ label: r.referrer, count: r.count }))}
@@ -143,7 +174,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
 
       {/* ROW 4: Browser, Device, Country */}
       <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {browsers ? (
+        {browsersErr ? (
+          <ErrorCard mutate={browsersMutate} />
+        ) : browsers ? (
           <DonutChartCard
             title="Browsers"
             data={browsers.map((b) => ({ name: (b.browser as string) || "Unknown", count: b.count, percentage: b.percentage }))}
@@ -151,7 +184,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
         ) : (
           <SkeletonChart height="h-[280px]" />
         )}
-        {devices ? (
+        {devicesErr ? (
+          <ErrorCard mutate={devicesMutate} />
+        ) : devices ? (
           <DonutChartCard
             title="Devices"
             data={devices.map((d) => ({ name: (d.device as string) || "Unknown", count: d.count, percentage: d.percentage }))}
@@ -159,7 +194,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
         ) : (
           <SkeletonChart height="h-[280px]" />
         )}
-        {countries ? (
+        {countriesErr ? (
+          <ErrorCard mutate={countriesMutate} />
+        ) : countries ? (
           <CountryTable title="Countries" data={countries} />
         ) : (
           <SkeletonTable />
@@ -167,7 +204,9 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
       </div>
 
       {/* ROW 5: Revenue (conditional) */}
-      {hasRevenue && overview && overview.totalRevenue > 0 && (
+      {revenueErr ? (
+        <ErrorCard mutate={revenueMutate} />
+      ) : hasRevenue && overview && overview.totalRevenue > 0 ? (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
           <div className="lg:col-span-3">
             <BarChartCard title="Revenue Over Time" data={revenue} />
@@ -178,7 +217,7 @@ export default function DashboardPage({ params }: { params: { siteId: string } }
             change={overview.changes.totalRevenue}
           />
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

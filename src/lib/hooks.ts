@@ -1,6 +1,5 @@
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from "@/lib/fetcher";
 
 function buildUrl(base: string, params: Record<string, string>) {
   const search = new URLSearchParams(params).toString();

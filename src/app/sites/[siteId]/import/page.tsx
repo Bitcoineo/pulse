@@ -137,7 +137,7 @@ export default function ImportPage({ params }: { params: { siteId: string } }) {
             Drop a CSV file here or click to browse
           </p>
           <p className="mt-1 text-xs text-stone-500">
-            Required columns: name, path, timestamp
+            Required columns: name, path, timestamp. Revenue should be in dollars (e.g. 10.50).
           </p>
           <input
             ref={fileRef}
